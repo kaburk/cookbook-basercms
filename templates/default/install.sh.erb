@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# unzip archive
+cd <%= Chef::Config[:file_cache_path] %>
+unzip -q <%= Chef::Config[:file_cache_path] %>/basercms.zip
+
+# move files
+mkdir -p <%= node["basercms"]["install_path"] %>
+mv <%= Chef::Config[:file_cache_path] %>/basercms/* <%= node["basercms"]["install_path"] %>
+
+# change owner
+chown -R <%= node["basercms"]["owner"] %>:<%= node["basercms"]["group"] %> <%= node["basercms"]["install_path"] %>
+
+# fix App.baseUrl issue
+if env test "<%= node["basercms"]["fix_app_baseurl_issue"] %>" == "true"; then
+	sed -e "s/Configure::write('App\.baseUrl', \$_SERVER\['SCRIPT_NAME'\]);/Configure::write('App.baseUrl', '');/g" <%= node["basercms"]["install_path"] %>/app/Config/core.php > <%= node["basercms"]["install_path"] %>/app/Config/core.fix.php
+	mv -f <%= node["basercms"]["install_path"] %>/app/Config/core.fix.php <%= node["basercms"]["install_path"] %>/app/Config/core.php
+	chmod 755 <%= node["basercms"]["install_path"] %>/app/Config/core.php
+fi
