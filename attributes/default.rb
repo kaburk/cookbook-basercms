@@ -3,11 +3,11 @@ default["basercms"]["db"]["name"]     = "basercms"
 default["basercms"]["install_path"]   = "/var/www/site"
 default["basercms"]["download_link"]  = "http://basercms.net/packages/download/basercms/latest"
 
-if platform?("centos")
+if platform_family?("rhel")
 	default["basercms"]["owner"] = "apache"
 	default["basercms"]["group"] = "apache"
 
-elsif platform?("debian", "ubuntu")
+elsif platform_family?("debian")
 	default["basercms"]["owner"] = "www-data"
 	default["basercms"]["group"] = "www-data"
 
