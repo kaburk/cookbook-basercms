@@ -18,7 +18,6 @@ end
 #
 # install BaserCMS
 #
-root_file = "#{node['basercms']['install_path']}/index.php"
 remote_file "basercms" do
 	source node["basercms"]["download_link"]
 	path "#{Chef::Config[:file_cache_path]}/basercms.zip"
@@ -26,7 +25,7 @@ remote_file "basercms" do
 	group "root"
 	mode 0644
 	action :create
-	not_if { File.exists?(root_file) }
+	not_if { File.exists?(node["basercms"]["install_path"]) }
 end
 
 template "basercms" do
@@ -35,13 +34,13 @@ template "basercms" do
 	owner "root"
 	group "root"
 	mode 0755
-	not_if { File.exists?(root_file) }
+	not_if { File.exists?(node["basercms"]["install_path"]) }
 end
 
 bash "basercms" do
 	code "#{Chef::Config[:file_cache_path]}/install.sh"
 	action :run
-	not_if { File.exists?(root_file) }
+	not_if { File.exists?(node["basercms"]["install_path"]) }
 end
 
 #
