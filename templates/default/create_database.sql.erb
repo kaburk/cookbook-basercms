@@ -1,1 +1,3 @@
 create database <%= node["basercms"]["db"]["name"] %> default character set utf8;
+create user '<%= node["basercms"]["db"]["user"] %>'@'localhost' identified by '<%= node["basercms"]["db"]["password"] %>';
+grant all privileges on <%= node["basercms"]["db"]["name"] %>.* to '<%= node["basercms"]["db"]["user"] %>'@'localhost';
