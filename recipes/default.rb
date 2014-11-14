@@ -54,10 +54,10 @@ template "create_database" do
 	owner "root"
 	group "root"
 	mode 0644
-	not_if "mysql -u root -p#{db_rootpassword} -D #{db_name}"
+	not_if "mysql -u root -p'#{db_rootpassword}' -D #{db_name}"
 end
 
 execute "create_database" do
-	command "mysql -u root -p#{db_rootpassword} < #{Chef::Config[:file_cache_path]}/create_database.sql"
-	not_if "mysql -u root -p#{db_rootpassword} -D #{db_name}"
+	command "mysql -u root -p'#{db_rootpassword}' < #{Chef::Config[:file_cache_path]}/create_database.sql"
+	not_if "mysql -u root -p'#{db_rootpassword}' -D #{db_name}"
 end
